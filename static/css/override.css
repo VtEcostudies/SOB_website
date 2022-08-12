@@ -1,0 +1,8 @@
+/* JTL iframe hack */
+
+iframe {
+    border: none;         /* Reset default border */
+    background: transparent;
+    height: 70vh;        /* Viewport-relative units */
+    width: 50vw;
+}
