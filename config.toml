@@ -12,8 +12,6 @@ theme = "hugo-scroll"
 # The "title" of your website
 title = "VAL - State of Biodiversity"
 
-
-
 [markup]
   [markup.goldmark]
     [markup.goldmark.renderer]
