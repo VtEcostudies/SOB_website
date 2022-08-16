@@ -52,12 +52,12 @@
 
 
 
-drawTaxonBreakdownDonut();
+drawTaxonBreakdownDonut({exportData: sppTaxonData,
+                         width: 300,
+                         htmlID: "speciesBreakdown"});
 
 
 function drawTaxonBreakdownDonut() {
-//function sleep(ms) {
-//    return new Promise(resolve => setTimeout(resolve, ms));}
 
 //********************************************************************//
 //
@@ -109,6 +109,7 @@ Promise.all([fetch(sppQueries.Amphibia),
         .then(function(){makeSppBreakdownDoughNut({
                             exportData: sppTaxonData,
                             total_species: taxon_species,
+                            width: 300,
                             htmlID: "speciesBreakdown"})})
         .catch(function (error) {
 	// if there's an error, log it
@@ -140,7 +141,6 @@ function makeSppBreakdownDoughNut({exportData=TOOLS,
 
       // set the color scale
       var color = d3.scaleOrdinal()
-          //.domain(["a", "b", "c", "d", "e", "f", "g", "h"])
                     .domain(Object.keys(exportData))
                     .range([d3.interpolateViridis(0.5),
                             d3.interpolateViridis(1.0),
@@ -154,7 +154,6 @@ function makeSppBreakdownDoughNut({exportData=TOOLS,
                             d3.interpolateViridis(0.6),
                             d3.interpolateViridis(0.0)]);
 
-    //  console.log(`colors: ${color}`);
       // Compute the position of each group on the pie:
       var pie = d3.pie()
                   .sort(null) // Do not sort group by size
@@ -164,7 +163,7 @@ function makeSppBreakdownDoughNut({exportData=TOOLS,
 
       var tooltip = d3.select("#" + htmlID)
                       .append('div')
-                      .attr('class', 'activeTOOL');
+                      .attr('class', 'activeTOOL')
 
            tooltip.append('div')
                   .attr('class', 'label')
@@ -175,6 +174,7 @@ function makeSppBreakdownDoughNut({exportData=TOOLS,
 
           tooltip.append('div')
                   .attr('class', 'percent');
+
 
       // The arc generator
       var arc = d3.arc()
@@ -211,33 +211,32 @@ function makeSppBreakdownDoughNut({exportData=TOOLS,
               return d.value;                                           // NEW
             }));                                                        // NEW
             var percent = Math.round(1000 * d.data.value / total) / 10; // NEW
+            tooltip.style("left", d3.event.pageX+10+"px");
+            tooltip.style("top", d3.event.pageY-25+"px");
             tooltip.select('.label').html(d.data.key);                // NEW
             tooltip.select('.count').html(d.data.value.toLocaleString());                // NEW
             tooltip.select('.percent').html(percent + '%');             // NEW
-            tooltip.style('display', 'block');                          // NEW
+            tooltip.style('display', 'inline-block');                          // NEW
           });                                                           // NEW
 
           pathEnter.on('mouseout', function() {                              // NEW
             tooltip.style('display', 'none');                           // NEW
           });                                                           // NEW
 
-          // OPTIONAL
+       /*   // OPTIONAL
           pathEnter.on('mousemove', function(d) {                            // NEW
-          //  tooltip.style('top', (d3.event.pageY - 10) + 'px')          // NEW
-          //         .style('left', (d3.event.pageX - 10) + 'px');
-          // tooltip.style("top", (d3.event.pageY - 100) + "px")
-          //       .style("left", (d3.event.pageX - 100) + "px");             // NEW
-          //tooltip.style("top", d3.select(this).attr("cy") + "px");
-          //tooltip.style("left", d3.select(this).attr("cx") + "px")
+
           let pos = d3.select(this).node().getBoundingClientRect();
          d3.select('#'+htmlID)
-              .style('left', `${pos['x']}px`)
-              .style('top', `${(window.pageYOffset  + pos['y'] - 100)}px`);
-          });                                                           // NEW
+            .style('left', d3.event.pageX + 'px')
+            .style('top', d3.event.pageY + 'px');
+          }); 
+          */
+                                                                   // NEW
       /* add text to center of the donut plot */
           svg.append("text")
              .attr("text-anchor", "middle")
-             .attr('font-size', '4em')
+             .attr('font-size', '0em')
              .attr('y', 20)
              .text(total_species.toLocaleString());
 
@@ -253,7 +252,7 @@ function makeSppBreakdownDoughNut({exportData=TOOLS,
             .attr("x", 0)
             .attr("y", -150)
             .attr("text-anchor", "middle")
-            .style("font-size", "0.25em")
+            .style('font-size', '0em')
             .text(`Taxon breakdown`);
 
       // Add one dot in the legend for each name.
@@ -275,9 +274,9 @@ function makeSppBreakdownDoughNut({exportData=TOOLS,
           // 100 is where the first dot appears. 25 is the distance between dots
           .attr("y", function(d,i){ return -70 + i*18})
           .style("fill", function(d){ return color(d.data.key)})
-          .style("font-size", "0.5em")
           .text(function(d){ return d.data.key})
           .attr("text-anchor", "left")
           .style("alignment-baseline", "middle")
+          .style("font-size", "-1em")
 
       }
