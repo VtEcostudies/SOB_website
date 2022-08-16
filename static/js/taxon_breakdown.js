@@ -236,14 +236,14 @@ function makeSppBreakdownDoughNut({exportData=TOOLS,
       /* add text to center of the donut plot */
           svg.append("text")
              .attr("text-anchor", "middle")
-             .attr('font-size', '0em')
+             .attr('font-size', '1em')
              .attr('y', 20)
              .text(total_species.toLocaleString());
 
       /* add text to center of the donut plot */
       svg.append("text")
          .attr("text-anchor", "middle")
-         .attr('font-size', '0.5em')
+         .attr('font-size', '1em')
          .attr('y', -40)
          .text(`Species:`);
 
@@ -252,7 +252,7 @@ function makeSppBreakdownDoughNut({exportData=TOOLS,
             .attr("x", 0)
             .attr("y", -150)
             .attr("text-anchor", "middle")
-            .style('font-size', '0em')
+            .style('font-size', '1em')
             .text(`Taxon breakdown`);
 
       // Add one dot in the legend for each name.
@@ -277,6 +277,6 @@ function makeSppBreakdownDoughNut({exportData=TOOLS,
           .text(function(d){ return d.data.key})
           .attr("text-anchor", "left")
           .style("alignment-baseline", "middle")
-          .style("font-size", "-1em")
+          .style("font-size", "1em")
 
       }
